@@ -1,12 +1,12 @@
 package com.training;
 
+import com.training.builder.facets.Empleado;
+import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -35,6 +35,19 @@ public class PatronesApplication {
 							.genero(Persona.Genero.HOMBRE)
 							.build();
 					System.out.println(persona);
+
+					// Creamos una persona con facets
+					PersonBuilder personBuilder = new PersonBuilder();
+					Empleado otra = personBuilder.vive()
+										.direccion("Castellana 53")
+										.codigoPostal("26094")
+										.cuidad("Madrid")
+									.trabaja()
+										.empresa("Kairos")
+										.posicion("Programador")
+										.earning(20000)
+									.build();
+					System.out.println(otra);
 					break;
 				default:
 					break;
