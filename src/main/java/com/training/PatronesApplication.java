@@ -121,6 +121,8 @@ public class PatronesApplication {
 					System.out.println(enumSingleton1.getInfo()); // New enum info
 					System.out.println(enumSingleton2.getInfo()); // New enum info
 
+					break;
+
 				default:
 					break;
 			}
