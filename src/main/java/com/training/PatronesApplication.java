@@ -3,8 +3,12 @@ package com.training;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
-import com.training.factory.simple.Shape;
-import com.training.factory.simple.ShapeFactory;
+import com.training.factory.abstractfactory.AbstractFactory;
+import com.training.factory.abstractfactory.Animal;
+import com.training.factory.abstractfactory.Color;
+import com.training.factory.abstractfactory.FactoryProvider;
+import com.training.factory.method.Shape;
+import com.training.factory.method.ShapeFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -23,7 +27,8 @@ public class PatronesApplication {
 			System.out.println("Opcion: " + opcion);
 			System.out.println("Introduce el numero de prueba: ");
 			System.out.println("1.- Patron builder");
-			System.out.println("2.- Patron factory simple");
+			System.out.println("2.- Patron factory method");
+			System.out.println("3.- Patron abstract factory");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -52,6 +57,7 @@ public class PatronesApplication {
 									.build();
 					System.out.println(otra);
 					break;
+				// 2. Patron factory method
 				case 2:
 					ShapeFactory shapeFactory = new ShapeFactory();
 
@@ -72,6 +78,22 @@ public class PatronesApplication {
 
 					//call draw method of square
 					shape3.draw();
+					break;
+				// 3. Patron abstract factory
+				case 3:
+					// Abstract factory
+					AbstractFactory abstractFactory;
+
+					//creating a brown toy dog
+					abstractFactory = FactoryProvider.getFactory("Toy");
+					Animal toy = abstractFactory.getAnimal("Dog");
+
+					abstractFactory = FactoryProvider.getFactory("Color");
+					Color color = abstractFactory.getColor("Brown");
+
+					String result = "A " + toy.getType() + " with " + color.getColor() + " color " + toy.makeSound();
+
+					System.out.println(result);
 					break;
 				default:
 					break;

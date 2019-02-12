@@ -1,4 +1,4 @@
-package com.training.factory.simple;
+package com.training.factory.method;
 
 /**
  * Created by Jose Gonzalez on 12/02/2019.
