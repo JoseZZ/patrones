@@ -3,6 +3,8 @@ package com.training;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
+import com.training.factory.simple.Shape;
+import com.training.factory.simple.ShapeFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -21,6 +23,7 @@ public class PatronesApplication {
 			System.out.println("Opcion: " + opcion);
 			System.out.println("Introduce el numero de prueba: ");
 			System.out.println("1.- Patron builder");
+			System.out.println("2.- Patron factory simple");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -48,6 +51,27 @@ public class PatronesApplication {
 										.earning(20000)
 									.build();
 					System.out.println(otra);
+					break;
+				case 2:
+					ShapeFactory shapeFactory = new ShapeFactory();
+
+					//get an object of Circle and call its draw method.
+					Shape shape1 = shapeFactory.getShape("CIRCLE");
+
+					//call draw method of Circle
+					shape1.draw();
+
+					//get an object of Rectangle and call its draw method.
+					Shape shape2 = shapeFactory.getShape("RECTANGLE");
+
+					//call draw method of Rectangle
+					shape2.draw();
+
+					//get an object of Square and call its draw method.
+					Shape shape3 = shapeFactory.getShape("SQUARE");
+
+					//call draw method of square
+					shape3.draw();
 					break;
 				default:
 					break;
