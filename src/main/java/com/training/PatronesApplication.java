@@ -9,6 +9,9 @@ import com.training.factory.abstractfactory.Color;
 import com.training.factory.abstractfactory.FactoryProvider;
 import com.training.factory.method.Shape;
 import com.training.factory.method.ShapeFactory;
+import com.training.singleton.EnumSingleton;
+import com.training.singleton.InnerStaticSingleton;
+import com.training.singleton.LazySingleton;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -29,6 +32,7 @@ public class PatronesApplication {
 			System.out.println("1.- Patron builder");
 			System.out.println("2.- Patron factory method");
 			System.out.println("3.- Patron abstract factory");
+			System.out.println("4.- Patron singleton");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -95,6 +99,28 @@ public class PatronesApplication {
 
 					System.out.println(result);
 					break;
+				// 4. Singleton
+				case 4:
+					// Lazy
+					LazySingleton instance = LazySingleton.getInstance();
+					System.out.println("Primer singleton: " + instance.getMensaje());
+					LazySingleton instance2 = LazySingleton.getInstance();
+					System.out.println("Segundo singleton: " + instance2.getMensaje());
+
+					// Inner class
+					InnerStaticSingleton instance3 = InnerStaticSingleton.getInstance();
+					System.out.println("Tercer singleton: " + instance3.getMensaje());
+					InnerStaticSingleton instance4 = InnerStaticSingleton.getInstance();
+					System.out.println("Cuarto singleton: " + instance4.getMensaje());
+
+					// Enum
+					EnumSingleton enumSingleton1 = EnumSingleton.INSTANCE.getInstance();
+					System.out.println(enumSingleton1.getInfo()); //Initial enum info
+					EnumSingleton enumSingleton2 = EnumSingleton.INSTANCE.getInstance();
+					enumSingleton2.setInfo("New enum info");
+					System.out.println(enumSingleton1.getInfo()); // New enum info
+					System.out.println(enumSingleton2.getInfo()); // New enum info
+
 				default:
 					break;
 			}
