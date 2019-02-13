@@ -9,6 +9,8 @@ import com.training.factory.abstractfactory.Color;
 import com.training.factory.abstractfactory.FactoryProvider;
 import com.training.factory.method.Shape;
 import com.training.factory.method.ShapeFactory;
+import com.training.prototype.copiasuperficial.Enemigo;
+import com.training.prototype.copiasuperficial.GestorEnemigo;
 import com.training.singleton.EnumSingleton;
 import com.training.singleton.InnerStaticSingleton;
 import com.training.singleton.LazySingleton;
@@ -33,6 +35,7 @@ public class PatronesApplication {
 			System.out.println("2.- Patron factory method");
 			System.out.println("3.- Patron abstract factory");
 			System.out.println("4.- Patron singleton");
+			System.out.println("5.- Patron prototype");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -121,6 +124,61 @@ public class PatronesApplication {
 					System.out.println(enumSingleton1.getInfo()); // New enum info
 					System.out.println(enumSingleton2.getInfo()); // New enum info
 
+					break;
+				// 5. Prototype
+				// Se utiliza para crear copias de objetos de forma rapida, util si los objetos
+				// tienes propiedades comunes (libros, personas, etc.)
+				// Clonar un objeto es mas rapido que crearlo
+				case 5:
+					// Este ejemplo es para clonado superficial, donde el objeto clonado tiene
+					// los mismos valores que el original, guardando tambien las referencias a
+					// otros objetos. Se crea un objeto, el prototipo, y luego copias del mismo
+					GestorEnemigo objGP = new GestorEnemigo();
+
+					// Obtenemos el Guerrero original
+					Enemigo g1 = objGP.getEnemigo("Warrior1");
+
+					System.out.println("==============================");
+
+					// Mostramos su datos
+					System.out.println("El Guerrero original se llama [" + g1.getNombre() + "]");
+					System.out.println("Su arma es [" + g1.getArma() + "]");
+
+					System.out.println("==============================");
+
+					// Obtener un segundo Guerrero (clon del anterior)
+					Enemigo g2 = objGP.getClon("Warrior1");
+
+					// Mostrar los datos  (ambos tienen datos similares)
+					System.out.println("Clon del Guerrero creado:");
+					System.out.println("Su nombre es [" + g2.getNombre() + "]");
+					System.out.println("Su arma es [" + g2.getArma() + "]");
+
+					System.out.println("==============================");
+
+					// Modificamos el Guerrero clonado
+					g2.setNombre("Warrior2");
+					g2.setArma("HACHA");
+
+					// Mostrar los datos de ambos Guerreros (ambos tienen diferentes datos)
+					System.out.println("Tras modificar el clon, ahora se llama [" + g2.getNombre() + "]");
+					System.out.println("Su arma es [" + g2.getArma() + "]\n");
+
+					System.out.println("El nombre del Guerrero original es [" + g1.getNombre() + "]");
+					System.out.println("Su arma es [" + g1.getArma() + "]");
+
+					System.out.println("==============================");
+
+					// Modificamos el Guerrero original
+					g1.setNombre("Warrior-1");
+					g1.setArma("MAZA");
+
+					// Mostrar los datos de ambos Guerreros tras la modificación (ambos tienen diferentes datos)
+					System.out.println("Tras modificar el original, ahora es [" + g1.getNombre() + "]");
+					System.out.println("Su arma es [" + g1.getArma() + "]\n");
+
+					System.out.println("El nombre del clon es [" + g2.getNombre() + "]");
+					System.out.println("Su arma es [" + g2.getArma() + "]");
 					break;
 
 				default:
