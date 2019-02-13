@@ -5,6 +5,10 @@ import com.training.bridge.*;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
+import com.training.composite.Camarera;
+import com.training.composite.Menu;
+import com.training.composite.MenuComponent;
+import com.training.composite.MenuItem;
 import com.training.factory.abstractfactory.AbstractFactory;
 import com.training.factory.abstractfactory.Animal;
 import com.training.factory.abstractfactory.Color;
@@ -40,6 +44,7 @@ public class PatronesApplication {
 			System.out.println("5.- Patron prototype");
 			System.out.println("6.- Patron bridge");
 			System.out.println("7.- Patron adapter");
+			System.out.println("8.- Patron composite");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -58,14 +63,14 @@ public class PatronesApplication {
 					// Creamos una persona con facets
 					PersonBuilder personBuilder = new PersonBuilder();
 					Empleado otra = personBuilder.vive()
-										.direccion("Castellana 53")
-										.codigoPostal("26094")
-										.cuidad("Madrid")
-									.trabaja()
-										.empresa("Kairos")
-										.posicion("Programador")
-										.earning(20000)
-									.build();
+							.direccion("Castellana 53")
+							.codigoPostal("26094")
+							.cuidad("Madrid")
+							.trabaja()
+							.empresa("Kairos")
+							.posicion("Programador")
+							.earning(20000)
+							.build();
 					System.out.println(otra);
 					break;
 				// 2. Patron factory method
@@ -211,6 +216,45 @@ public class PatronesApplication {
 					System.out.println("El adaptador de gallinas hace:");
 					testPato(adapter);
 
+					break;
+				// 8. Composite
+				case 8:
+					// Preparamos un menu con submenus
+					MenuComponent pancakeHouseMenu = new Menu("MENU TARTA DE LA CASA", "Desayuno");
+					MenuComponent dinerMenu = new Menu("MENU ALMUERZO", "Almuerzo");
+					MenuComponent cafeMenu = new Menu("MENU CAFE", "Cena");
+					MenuComponent dessertMenu = new Menu("MENU POSTRE", "Pidete un postre!");
+					// Este menu contendra la carta entera
+					MenuComponent allMenus = new Menu("TODOS LOS MENUS", "Lista de todos los menus");
+					allMenus.add(pancakeHouseMenu);
+					allMenus.add(dinerMenu);
+					allMenus.add(cafeMenu);
+					// add menu items here
+					dinerMenu.add(new MenuItem(
+							"Pasta",
+							"Espaguetis con salsa marinera, y una rebanada de pan de masa madre",
+							true,
+							3.89));
+					dinerMenu.add(dessertMenu);
+					dessertMenu.add(new MenuItem("Tarta de Manzana",
+							"Tarta de manzana con superficie crujiente, con una bola de helado de vainilla",
+							true,
+							1.59));
+					cafeMenu.add(new MenuItem(
+							"Capuccino",
+							"Cafe capuccino con galletas de canela y nubecilla de nata",
+							true,
+							2.54));
+					pancakeHouseMenu.add(new MenuItem(
+							"Tarta del dia",
+							"Tarta tres leches casera",
+							false,
+							4.97));
+
+					// La camarera nos cantara el menu completo
+					Camarera camarera = new Camarera(allMenus);
+					camarera.printMenu();
+					System.out.println("\n");
 					break;
 				default:
 					break;
