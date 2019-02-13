@@ -1,5 +1,6 @@
 package com.training;
 
+import com.training.bridge.*;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
@@ -36,6 +37,8 @@ public class PatronesApplication {
 			System.out.println("3.- Patron abstract factory");
 			System.out.println("4.- Patron singleton");
 			System.out.println("5.- Patron prototype");
+			System.out.println("6.- Patron bridge");
+			System.out.println("7.- Patron adapter");
 			opcion = scanner.nextInt();
 			switch (opcion) {
 				// 1. Patron builder
@@ -180,7 +183,19 @@ public class PatronesApplication {
 					System.out.println("El nombre del clon es [" + g2.getNombre() + "]");
 					System.out.println("Su arma es [" + g2.getArma() + "]");
 					break;
-
+				// 6. Bridge
+				// Desacoplamos la abstraccion de la implementacion, de forma que ambos pueden
+				// variar independientemente
+				case 6:
+					Figura rombo = new Rombo(new Rojo());
+					System.out.println(rombo.draw());
+					Figura triangulo = new Triangulo(new Azul());
+					System.out.println(triangulo.draw());
+					break;
+				// 7. Adapter
+				case 7:
+					
+					break;
 				default:
 					break;
 			}
