@@ -1,5 +1,6 @@
 package com.training;
 
+import com.training.adapter.*;
 import com.training.bridge.*;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
@@ -193,14 +194,34 @@ public class PatronesApplication {
 					System.out.println(triangulo.draw());
 					break;
 				// 7. Adapter
+				// Convierte la interfaz de una clase en la interfaz que el cliente necesita
 				case 7:
-					
+					Pato patocolorao = new PatoColorao();
+					Gallina caponata = new Caponata();
+					GallinaAdapter adapter = new GallinaAdapter(caponata);
+
+					System.out.println("La gallina hace:");
+					caponata.cacarea();
+					caponata.volar();
+					System.out.println("============================");
+					System.out.println("El pato hace:");
+					patocolorao.quack();
+					patocolorao.volar();
+					System.out.println("============================");
+					System.out.println("El adaptador de gallinas hace:");
+					testPato(adapter);
+
 					break;
 				default:
 					break;
 			}
 		}
 		System.out.println("Adios");
+	}
+
+	private static void testPato(Pato adapter) {
+		adapter.quack();
+		adapter.volar();
 	}
 
 }
