@@ -10,6 +10,7 @@ import com.training.composite.Menu;
 import com.training.composite.MenuComponent;
 import com.training.composite.MenuItem;
 import com.training.decorator.*;
+import com.training.facade.CarEngineFacade;
 import com.training.factory.abstractfactory.AbstractFactory;
 import com.training.factory.abstractfactory.Animal;
 import com.training.factory.abstractfactory.Color;
@@ -281,6 +282,18 @@ public class PatronesApplication {
                     frapu = new Moka(frapu);
                     frapu = new Desnatado(frapu);
                     System.out.println(frapu.getDescription() + " $ " + frapu.cost());
+                    break;
+
+                // 10. Facade
+                // Ofrece una interfaz unificada y sencilla a un conjunto de interfaces
+                // en un subsistema. Si queremos usar el subsistema tambien podemos
+                case 10:
+                    // En el ejemplo de arrancar y parar el motor de un coche, varias partes
+                    // entran en juego y hay que activar varias cosas. Ofrecemos una interfaz sencilla
+                    // para encender y parar
+                    CarEngineFacade facade = new CarEngineFacade();
+                    facade.startEngine();
+                    facade.stopEngine();
                     break;
                 default:
                     break;
