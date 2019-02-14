@@ -17,6 +17,8 @@ import com.training.factory.abstractfactory.Color;
 import com.training.factory.abstractfactory.FactoryProvider;
 import com.training.factory.method.Shape;
 import com.training.factory.method.ShapeFactory;
+import com.training.flyweight.FactoriaMacs;
+import com.training.flyweight.MacBookAir;
 import com.training.prototype.copiasuperficial.Enemigo;
 import com.training.prototype.copiasuperficial.GestorEnemigo;
 import com.training.singleton.EnumSingleton;
@@ -49,6 +51,7 @@ public class PatronesApplication {
             System.out.println("8.- Patron composite");
             System.out.println("9.- Patron decorator");
             System.out.println("10.- Patron facade");
+            System.out.println("11.- Patron flyweight");
             opcion = scanner.nextInt();
             switch (opcion) {
                 // 1. Patron builder
@@ -83,19 +86,14 @@ public class PatronesApplication {
 
                     //get an object of Circle and call its draw method.
                     Shape shape1 = shapeFactory.getShape("CIRCLE");
-
                     //call draw method of Circle
                     shape1.draw();
-
                     //get an object of Rectangle and call its draw method.
                     Shape shape2 = shapeFactory.getShape("RECTANGLE");
-
                     //call draw method of Rectangle
                     shape2.draw();
-
                     //get an object of Square and call its draw method.
                     Shape shape3 = shapeFactory.getShape("SQUARE");
-
                     //call draw method of square
                     shape3.draw();
                     break;
@@ -294,6 +292,20 @@ public class PatronesApplication {
                     CarEngineFacade facade = new CarEngineFacade();
                     facade.startEngine();
                     facade.stopEngine();
+                    break;
+
+                // 11. Flyweight
+                // Este patron se utiliza para reducir el consumo de memoria
+                // Funciona como una factoria que recicla los objetos creados previamente
+                case 11:
+                    // Imagina que necesitamos crear miles de equipos, pero el numero de configuraciones
+                    // posibles son solo dos o tres. No necesitamos crear mil objetos, solo reusar aquel
+                    // que tenga la configuracion que necesitamos
+                    MacBookAir m1 = FactoriaMacs.crearMacBookAir("1", 4, 128);
+                    MacBookAir m2 = FactoriaMacs.crearMacBookAir("2", 4, 128);
+                    MacBookAir m3 = FactoriaMacs.crearMacBookAir("3", 8, 256);
+                    MacBookAir m4 = FactoriaMacs.crearMacBookAir("4", 8, 256);
+                    // Con este ejemplo solo deben crearse 2 Macs, ya que solo hay dos configuraciones distintas
                     break;
                 default:
                     break;
