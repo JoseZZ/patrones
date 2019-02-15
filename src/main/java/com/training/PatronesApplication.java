@@ -21,12 +21,20 @@ import com.training.flyweight.FactoriaMacs;
 import com.training.flyweight.MacBookAir;
 import com.training.prototype.copiasuperficial.Enemigo;
 import com.training.prototype.copiasuperficial.GestorEnemigo;
+import com.training.proxy.dynamic.Buenas;
+import com.training.proxy.dynamic.Handler;
+import com.training.proxy.dynamic.Saludo;
+import com.training.proxy.security.Atraccion;
+import com.training.proxy.security.Cliente;
+import com.training.proxy.security.Noria;
+import com.training.proxy.security.NoriaProxy;
 import com.training.singleton.EnumSingleton;
 import com.training.singleton.InnerStaticSingleton;
 import com.training.singleton.LazySingleton;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.lang.reflect.Proxy;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -52,6 +60,9 @@ public class PatronesApplication {
             System.out.println("9.- Patron decorator");
             System.out.println("10.- Patron facade");
             System.out.println("11.- Patron flyweight");
+            System.out.println("12.- Patron proxy");
+            System.out.println("13.- Patron chainofresponsibility");
+            System.out.println("14.- Patron command");
             opcion = scanner.nextInt();
             switch (opcion) {
                 // 1. Patron builder
@@ -306,6 +317,41 @@ public class PatronesApplication {
                     MacBookAir m3 = FactoriaMacs.crearMacBookAir("3", 8, 256);
                     MacBookAir m4 = FactoriaMacs.crearMacBookAir("4", 8, 256);
                     // Con este ejemplo solo deben crearse 2 Macs, ya que solo hay dos configuraciones distintas
+                    break;
+
+                // 12. Proxy
+                // El proxy debe ofrecer exactamente el mismo interfaz que el objeto al que representa
+                case 12:
+                    // Podemos usar el proxy para controlar el acceso
+                    Noria noria = new Noria();
+                    noria.subir(new Cliente(19, "Luisa"));
+                    Atraccion atraccion = new NoriaProxy();
+                    atraccion.subir(new Cliente(12, "Julian"));
+                    atraccion.subir(new Cliente(16, "Pedro"));
+                    atraccion.subir(new Cliente(18, "Miguel"));
+                    System.out.println();
+
+                    // Proxy dinamico
+                    // Permite que una clase con un metodo sirve para multiples llamadas a distintas
+                    // clases con un numero arbitrario de metodos. Es como un tipo de Facade. Se enrutan
+                    // todas las llamadas a un unico metodo
+                    Buenas buenas = new Buenas();
+                    Handler handler = new Handler(buenas);
+                    // La clase proxy generara un proxy y devolvera el objeto que necesitamos
+                    Saludo f = (Saludo) Proxy.newProxyInstance(Saludo.class.getClassLoader(),
+                        new Class[]{Saludo.class},
+                        handler);
+                    f.originalMethod("Hola muy buenas");
+                    break;
+
+                // 13. Chain of responsibility
+                case 13:
+
+                    break;
+
+                // 14. Command
+                case 14:
+
                     break;
                 default:
                     break;
