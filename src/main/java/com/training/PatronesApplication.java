@@ -5,6 +5,12 @@ import com.training.bridge.*;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
+import com.training.chainofresponsibility.logger.AbstractLogger;
+import com.training.chainofresponsibility.logger.ConsoleLogger;
+import com.training.chainofresponsibility.logger.ErrorLogger;
+import com.training.chainofresponsibility.logger.FileLogger;
+import com.training.chainofresponsibility.number.*;
+import com.training.chainofresponsibility.number.Number;
 import com.training.composite.Camarera;
 import com.training.composite.Menu;
 import com.training.composite.MenuComponent;
@@ -345,7 +351,34 @@ public class PatronesApplication {
                     break;
 
                 // 13. Chain of responsibility
+                // Cada procesador de la cadena tendra su forma de procesar el comando
+                // Cada procesador en la cadena tendra una referencia al siguiente procesador
+                // Cada procesador tendra la responsabilidad de delegar en el siguiente procesador
+                // Los procesadores tendran cuidado de no formar un bucle
+                // Solo un procesador de la cadena gestionara el comando
                 case 13:
+                    // Creamos una cadena para gestionar las trazas
+                    // Aunque un logger gestione los mensajes, no bloquea y lo pasa al siguiente logger
+                    // que tenga configurado. Dependera del nivel que se muestre o no
+                    AbstractLogger loggerChain = getChainOfLoggers();
+
+                    loggerChain.logMessage(AbstractLogger.INFO, "This is an information.");
+                    loggerChain.logMessage(AbstractLogger.DEBUG, "This is an debug level information.");
+                    loggerChain.logMessage(AbstractLogger.ERROR, "This is an error information.");
+
+                    // En este caso cuando una clase procese la peticion, ya no pasa al siguiente
+                    // Configuramos la cadena de responsabilidad
+                    Chain c1 = new NegativeProcessor();
+                    Chain c2 = new ZeroProcessor();
+                    Chain c3 = new PositiveProcessor();
+                    c1.setNext(c2);
+                    c2.setNext(c3);
+                    System.out.println();
+                    // Procesamos distintos numeros
+                    c1.process(new Number(90));
+                    c1.process(new Number(-50));
+                    c1.process(new Number(0));
+                    c1.process(new Number(91));
 
                     break;
 
@@ -364,6 +397,19 @@ public class PatronesApplication {
         adapter.quack();
         adapter.volar();
     }
+
+    private static AbstractLogger getChainOfLoggers() {
+
+        AbstractLogger errorLogger = new ErrorLogger(AbstractLogger.ERROR);
+        AbstractLogger fileLogger = new FileLogger(AbstractLogger.DEBUG);
+        AbstractLogger consoleLogger = new ConsoleLogger(AbstractLogger.INFO);
+
+        errorLogger.setNextLogger(fileLogger);
+        fileLogger.setNextLogger(consoleLogger);
+
+        return errorLogger;
+    }
+
 
 }
 

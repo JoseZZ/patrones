@@ -1,8 +1,6 @@
 package com.training.proxy.dynamic;
 
-/**
- * @author <a href="changeme@ext.inditex.com">Jose Gonzalez</a>
- */
+// El objeto que queremos pasar por el proxy debe tener una interfaz
 public class Buenas implements Saludo {
 
     @Override
