@@ -1,7 +1,15 @@
 package com.training;
 
-import com.training.adapter.*;
-import com.training.bridge.*;
+import com.training.adapter.Caponata;
+import com.training.adapter.Gallina;
+import com.training.adapter.GallinaAdapter;
+import com.training.adapter.Pato;
+import com.training.adapter.PatoColorao;
+import com.training.bridge.Azul;
+import com.training.bridge.Figura;
+import com.training.bridge.Rojo;
+import com.training.bridge.Rombo;
+import com.training.bridge.Triangulo;
 import com.training.builder.facets.Empleado;
 import com.training.builder.facets.PersonBuilder;
 import com.training.builder.simple.Persona;
@@ -9,15 +17,40 @@ import com.training.chainofresponsibility.logger.AbstractLogger;
 import com.training.chainofresponsibility.logger.ConsoleLogger;
 import com.training.chainofresponsibility.logger.ErrorLogger;
 import com.training.chainofresponsibility.logger.FileLogger;
-import com.training.chainofresponsibility.number.*;
+import com.training.chainofresponsibility.number.Chain;
+import com.training.chainofresponsibility.number.NegativeProcessor;
 import com.training.chainofresponsibility.number.Number;
-import com.training.command.remotecontrol.*;
-import com.training.command.undo.*;
+import com.training.chainofresponsibility.number.PositiveProcessor;
+import com.training.chainofresponsibility.number.ZeroProcessor;
+import com.training.command.remotecontrol.CeilingFan;
+import com.training.command.remotecontrol.CeilingFanOffCommand;
+import com.training.command.remotecontrol.CeilingFanOnCommand;
+import com.training.command.remotecontrol.GarageDoor;
+import com.training.command.remotecontrol.GarageDoorDownCommand;
+import com.training.command.remotecontrol.GarageDoorUpCommand;
+import com.training.command.remotecontrol.Light;
+import com.training.command.remotecontrol.LightOffCommand;
+import com.training.command.remotecontrol.LightOnCommand;
+import com.training.command.remotecontrol.RemoteControl;
+import com.training.command.remotecontrol.Stereo;
+import com.training.command.remotecontrol.StereoOffCommand;
+import com.training.command.remotecontrol.StereoOnWithCDCommand;
+import com.training.command.undo.Calefactor;
+import com.training.command.undo.CalefactorAltoCommand;
+import com.training.command.undo.CalefactorMedioCommand;
+import com.training.command.undo.CalefactorOffCommand;
+import com.training.command.undo.RemoteControlWithUndo;
 import com.training.composite.Camarera;
 import com.training.composite.Menu;
 import com.training.composite.MenuComponent;
 import com.training.composite.MenuItem;
-import com.training.decorator.*;
+import com.training.decorator.Americano;
+import com.training.decorator.Bebida;
+import com.training.decorator.Desnatado;
+import com.training.decorator.Expresso;
+import com.training.decorator.Frapuccino;
+import com.training.decorator.Moka;
+import com.training.decorator.Soja;
 import com.training.facade.CarEngineFacade;
 import com.training.factory.abstractfactory.AbstractFactory;
 import com.training.factory.abstractfactory.Animal;
@@ -27,6 +60,14 @@ import com.training.factory.method.Shape;
 import com.training.factory.method.ShapeFactory;
 import com.training.flyweight.FactoriaMacs;
 import com.training.flyweight.MacBookAir;
+import com.training.observer.custom.CurrentConditionsDisplay;
+import com.training.observer.custom.ForecastDisplay;
+import com.training.observer.custom.StatisticsDisplay;
+import com.training.observer.custom.WeatherData;
+import com.training.observer.observable.CondicionesActualesDisplay;
+import com.training.observer.observable.DatosTiempo;
+import com.training.observer.observable.EstadisticasDisplay;
+import com.training.observer.observable.PronosticoDisplay;
 import com.training.prototype.copiasuperficial.Enemigo;
 import com.training.prototype.copiasuperficial.GestorEnemigo;
 import com.training.proxy.dynamic.Buenas;
@@ -39,12 +80,11 @@ import com.training.proxy.security.NoriaProxy;
 import com.training.singleton.EnumSingleton;
 import com.training.singleton.InnerStaticSingleton;
 import com.training.singleton.LazySingleton;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.lang.reflect.Proxy;
 import java.time.LocalDate;
 import java.util.Scanner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PatronesApplication {
@@ -71,6 +111,7 @@ public class PatronesApplication {
             System.out.println("12.- Patron proxy");
             System.out.println("13.- Patron chainofresponsibility");
             System.out.println("14.- Patron command");
+            System.out.println("15.- Patron observer");
             opcion = scanner.nextInt();
             switch (opcion) {
                 // 1. Patron builder
@@ -447,6 +488,37 @@ public class PatronesApplication {
                     remoteControlWithUndo.onButtonWasPushed(1);
                     System.out.println(remoteControl);
                     remoteControlWithUndo.undoButtonWasPushed();
+                    System.out.println();
+                    break;
+
+                // 15. Patron Observer
+                // Define una relacion uno a muchos de forma que cuando un objeto cambio, todos los objetos
+                // dependientes del mismo son notificados y actualizados automaticamente
+                case 15:
+                    // Modelamos una estacion meteorologica
+                    WeatherData weatherData = new WeatherData();
+                    // Definimos nuestros observers
+                    CurrentConditionsDisplay conditionsDisplay = new CurrentConditionsDisplay(weatherData);
+                    StatisticsDisplay statisticsDisplay = new StatisticsDisplay(weatherData);
+                    ForecastDisplay forecastDisplay = new ForecastDisplay(weatherData);
+                    // Simulamos que tomamos medidas
+                    weatherData.setMeasurements(30, 65, 30.4f);
+                    weatherData.setMeasurements(32, 70, 29.2f);
+                    weatherData.setMeasurements(18, 90, 29.2f);
+                    System.out.println();
+                    System.out.println("----- Mismas pruebas con clase Observer Java -----");
+
+                    // La clase Observable de Java permite implementar este patron
+                    DatosTiempo datosTiempo = new DatosTiempo();
+                    // Definimos nuestros observers
+                    CondicionesActualesDisplay actualesDisplay = new CondicionesActualesDisplay(datosTiempo);
+                    EstadisticasDisplay estadisticasDisplay = new EstadisticasDisplay(datosTiempo);
+                    PronosticoDisplay pronosticoDisplay = new PronosticoDisplay(datosTiempo);
+                    // Simulamos que tomamos medidas
+                    datosTiempo.setMeasurements(40, 55, 28.4f);
+                    datosTiempo.setMeasurements(44, 67, 25.2f);
+                    datosTiempo.setMeasurements(25, 89, 25.2f);
+                    System.out.println();
 
                     break;
                 default:
