@@ -11,6 +11,8 @@ import com.training.chainofresponsibility.logger.ErrorLogger;
 import com.training.chainofresponsibility.logger.FileLogger;
 import com.training.chainofresponsibility.number.*;
 import com.training.chainofresponsibility.number.Number;
+import com.training.command.remotecontrol.*;
+import com.training.command.undo.*;
 import com.training.composite.Camarera;
 import com.training.composite.Menu;
 import com.training.composite.MenuComponent;
@@ -383,7 +385,68 @@ public class PatronesApplication {
                     break;
 
                 // 14. Command
+                // Este patron encapsula una peticion como un objeto, por lo que permite parametrizar
+                // otros objetos con peticiones diferentes, encolarlas o incluso deshacer operaciones
                 case 14:
+                    // Modelamos un control remoto remotecontrol
+                    RemoteControl remoteControl = new RemoteControl();
+
+                    Light livingRoomLight = new Light("Living Room");
+                    Light kitchenLight = new Light("Kitchen");
+                    CeilingFan ceilingFan = new CeilingFan("Living Room");
+                    GarageDoor garageDoor = new GarageDoor("");
+                    Stereo stereo = new Stereo("Living Room");
+
+                    LightOnCommand livingRoomLightOn = new LightOnCommand(livingRoomLight);
+                    LightOffCommand livingRoomLightOff = new LightOffCommand(livingRoomLight);
+                    LightOnCommand kitchenLightOn = new LightOnCommand(kitchenLight);
+                    LightOffCommand kitchenLightOff = new LightOffCommand(kitchenLight);
+
+                    CeilingFanOnCommand ceilingFanOn = new CeilingFanOnCommand(ceilingFan);
+                    CeilingFanOffCommand ceilingFanOff = new CeilingFanOffCommand(ceilingFan);
+
+                    GarageDoorUpCommand garageDoorUp = new GarageDoorUpCommand(garageDoor);
+                    GarageDoorDownCommand garageDoorDown = new GarageDoorDownCommand(garageDoor);
+
+                    StereoOnWithCDCommand stereoOnWithCD = new StereoOnWithCDCommand(stereo);
+                    StereoOffCommand stereoOff = new StereoOffCommand(stereo);
+
+                    remoteControl.setCommand(0, livingRoomLightOn, livingRoomLightOff);
+                    remoteControl.setCommand(1, kitchenLightOn, kitchenLightOff);
+                    remoteControl.setCommand(2, ceilingFanOn, ceilingFanOff);
+                    remoteControl.setCommand(3, stereoOnWithCD, stereoOff);
+
+                    System.out.println(remoteControl);
+
+                    remoteControl.onButtonWasPushed(0);
+                    remoteControl.offButtonWasPushed(0);
+                    remoteControl.onButtonWasPushed(1);
+                    remoteControl.offButtonWasPushed(1);
+                    remoteControl.onButtonWasPushed(2);
+                    remoteControl.offButtonWasPushed(2);
+                    remoteControl.onButtonWasPushed(3);
+                    remoteControl.offButtonWasPushed(3);
+                    System.out.println();
+
+                    // Probamos un patron con undo
+                    RemoteControlWithUndo remoteControlWithUndo = new RemoteControlWithUndo();
+
+                    Calefactor calefactor = new Calefactor("El comedor");
+                    CalefactorMedioCommand calefactorMedioCommand = new CalefactorMedioCommand(calefactor);
+                    CalefactorAltoCommand calefactorAltoCommand = new CalefactorAltoCommand(calefactor);
+                    CalefactorOffCommand calefactorOffCommand = new CalefactorOffCommand(calefactor);
+
+                    remoteControlWithUndo.setCommand(0, calefactorMedioCommand, calefactorOffCommand);
+                    remoteControlWithUndo.setCommand(1, calefactorAltoCommand, calefactorOffCommand);
+
+                    remoteControlWithUndo.onButtonWasPushed(0);
+                    remoteControlWithUndo.offButtonWasPushed(0);
+                    System.out.println(remoteControlWithUndo);
+                    remoteControlWithUndo.undoButtonWasPushed();
+
+                    remoteControlWithUndo.onButtonWasPushed(1);
+                    System.out.println(remoteControl);
+                    remoteControlWithUndo.undoButtonWasPushed();
 
                     break;
                 default:
